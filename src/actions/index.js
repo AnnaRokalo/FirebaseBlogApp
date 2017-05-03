@@ -29,7 +29,7 @@ export function signUpUser({email, password}) {
 }
 
 export function signInUser({email, password}) {
-  console.log("Email: " + email + "; password: " + password);
+  console.log("Hello from signIn! Email: " + email + "; password: " + password);
   //Submit email/password to the server
 
   return function (dispatch) {

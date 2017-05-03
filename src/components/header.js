@@ -10,10 +10,14 @@ class Header extends Component {
 
   renderLinks() {
     if(this.props.authenticated) {
-      return (
-        <li className="nav-item">
-          <a href="#" className="nav-link" onClick={this.handleSignOut.bind(this)}>Sign Out</a>
+      return ([
+        <li className="nav-item" key={3}>
+          <Link className="nav-link" to="/add-post">Add Story</Link>
+        </li>,
+        <li className="nav-item" key={4}>
+          <Link to="/" className="nav-link" onClick={this.handleSignOut.bind(this)}>Sign Out</Link>
         </li>
+        ]
       );
     }
     else {

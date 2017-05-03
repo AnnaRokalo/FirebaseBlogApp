@@ -1,3 +1,19 @@
+/*
+Color palette
+#84a9a1  green
+#c0dfd0  light green
+#d3d7db  light grey
+#9ba6ad  grey
+#6b6369 brown
+
+#016367 dark green
+#44af92 middle green
+#9fedd4 light green
+#d6dfc2 -||-||-
+#f6fceb -||-||-
+
+*/
+
 html, body {
   font-family: 'Lato', sans-serif;
 }
@@ -5,7 +21,7 @@ html, body {
 .header {
   padding: 20px 0;
   border-bottom: 1px solid  #016367;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .logo-text {
@@ -17,4 +33,41 @@ html, body {
 
 .navbar {
   margin-bottom: 0;
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 250px;
+
+  outline: none;
+}
+
+.form-control {
+  border-color: rgba(107,99,105, 0.5);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: #6b6369;
+  outline: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.btn-default {
+  color: #016367;
+  border-color: #44af92;
+  outline: none;
+}
+
+.btn-default:hover,  .btn-default:active, .btn-default:focus, .btn-default:active, .btn-default:active:hover {
+  color: #fff;
+  border-color: #44af92;
+  background-color: #44af92;
+  outline: none;
+}
+
+.form-control--right {
+  text-align: right;
 }
