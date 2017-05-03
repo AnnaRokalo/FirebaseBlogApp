@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import * as actions from '../actions/index';
 
 class Header extends Component {
+  handleSignOut() {
+    this.props.signOutUser();
+  }
+
   renderLinks() {
     if(this.props.authenticated) {
       return (
         <li className="nav-item">
-          <Link to="/signout" className="nav-link">Sign Out</Link>
+          <a href="#" className="nav-link" onClick={this.handleSignOut.bind(this)}>Sign Out</a>
         </li>
       );
     }
@@ -49,4 +54,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, actions)(Header);

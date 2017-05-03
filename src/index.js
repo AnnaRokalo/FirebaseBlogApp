@@ -9,10 +9,13 @@ import App from './components/app';
 import SignIn from './components/auth/signin';
 import SignUp from './components/auth/signup';
 import reducers from './reducers';
-// import * as actions from './actions/index';
+ import * as actions from './actions/index';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
+
+store.dispatch(actions.verifyAuth());
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>

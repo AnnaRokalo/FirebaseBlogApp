@@ -51,7 +51,7 @@ export function signOutUser() {
   browserHistory.push('/');
 
   return {
-    type: SIGN_OUT_USER
+    type: UNAUTH_USER
   }
 }
 
