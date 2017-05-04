@@ -1,5 +1,5 @@
 import {browserHistory} from 'react-router';
-import {AUTH_USER, UNAUTH_USER, AUTH_ERROR} from './types';
+import {AUTH_USER, UNAUTH_USER, AUTH_ERROR, CREATE_POST, POST_ADDED, FAIL_ADD_POST, FETCH_POSTS} from './types';
 import firebase from 'firebase';
 
 const configFirebase = {
@@ -77,5 +77,41 @@ export function authError(error) {
   return {
     type: AUTH_ERROR,
     payload: error
+  }
+}
+
+// Posts
+export function fetchPosts() {
+  return dispatch => {
+    firebase.database().ref('/posts').on('value', snapshot => {
+      dispatch({
+        type: FETCH_POSTS,
+        payload: snapshot.val()
+      })
+    });
+  }
+}
+
+
+export function addPost(props) {
+  return dispatch => {
+    const postId ="post:" + Math.random().toString(36).substr(2, 9);
+    const postsRef = firebase.database().ref('posts/' + postId);
+    const userUid = firebase.auth().currentUser.uid;
+    postsRef.set({
+      postId,
+      title: props.title,
+      data: props.post,
+      author: userUid
+    }).then(() => {
+      dispatch({
+        type: POST_ADDED
+      });
+    }).catch((error) => {
+      dispatch({
+        type: FAIL_ADD_POST,
+        payload: error.message
+      });
+    });
   }
 }

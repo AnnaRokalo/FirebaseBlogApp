@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import { Field, reduxForm } from 'redux-form';
 import * as actions from '../actions/index';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 
 
 class AddPost extends Component {
   handleFormSubmit({title, post}) {
-    console.log("hello from add post");
-    console.log(title + '\n' +post);
-    //this.props.signInUser({email, password});
+    this.props.addPost({title, post});
+    browserHistory.push('/');
+    console.log('Post was added');
   }
 
   render() {
@@ -33,9 +34,5 @@ AddPost = reduxForm({
   form: 'AddPostForm'
 })(AddPost);
 
-function mapStateToProps(state) {
-  return {};
 
-}
-
-export default connect(mapStateToProps, actions)(AddPost);
+export default connect(null, actions)(AddPost);

@@ -14,6 +14,7 @@ import postList from './components/postList';
 import reducers from './reducers';
 import * as actions from './actions/index';
 
+//add redux devTools
 const store = createStore(
   reducers,
   compose (
