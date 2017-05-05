@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import { Field, reduxForm } from 'redux-form';
-import * as actions from '../actions/index';
+import {createPost} from '../actions/index';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
 
 class AddPost extends Component {
   handleFormSubmit({title, post}) {
-    this.props.addPost({title, post});
+    this.props.createPost({title, post});
     browserHistory.push('/');
-    console.log('Post was added');
   }
 
   render() {
@@ -35,4 +34,4 @@ AddPost = reduxForm({
 })(AddPost);
 
 
-export default connect(null, actions)(AddPost);
+export default connect(null, {createPost})(AddPost);

@@ -1,6 +1,17 @@
 import {browserHistory} from 'react-router';
-import {AUTH_USER, UNAUTH_USER, AUTH_ERROR, CREATE_POST, POST_ADDED, FAIL_ADD_POST, FETCH_POSTS} from './types';
 import firebase from 'firebase';
+
+import {AUTH_USER,
+        UNAUTH_USER,
+        AUTH_ERROR,
+        CREATE_POST,
+        POST_ADDED,
+        FAIL_ADD_POST,
+        FETCH_POSTS,
+        FETCH_POST,
+        FAIL_DELETE_POST,
+        DELETE_POST} from './types';
+
 
 const configFirebase = {
   apiKey: "AIzaSyCC23-AwqG60zSCNLKGmpKhp7tuWusDWeg",
@@ -92,10 +103,9 @@ export function fetchPosts() {
   }
 }
 
-
-export function addPost(props) {
+export function createPost(props) {
   return dispatch => {
-    const postId ="post:" + Math.random().toString(36).substr(2, 9);
+    const postId = Math.random().toString(36).substr(2, 9);
     const postsRef = firebase.database().ref('posts/' + postId);
     const userUid = firebase.auth().currentUser.uid;
     postsRef.set({
@@ -113,5 +123,35 @@ export function addPost(props) {
         payload: error.message
       });
     });
+  }
+}
+
+export function fetchPost(id) {
+  return dispatch => {
+    firebase.database().ref('posts/' + id).once('value', snapshot => {
+      dispatch({
+        type: FETCH_POST,
+        payload: snapshot.val()
+      })
+    });
+  }
+}
+
+export function deletePost(id) {
+  console.log("deleting post");
+  return dispatch => {
+    const delPostRef = firebase.database().ref('posts/' + id);
+    delPostRef.remove()
+      .then(() => {
+        console.log("deleting post is successful");
+        dispatch({
+          type: DELETE_POST
+        })})
+      .catch((error) => {
+        dispatch({
+          type: FAIL_DELETE_POST,
+          payload: error.message
+        });
+      });
   }
 }

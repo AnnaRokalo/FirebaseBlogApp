@@ -1,22 +1,24 @@
-import {CREATE_POST, POST_ADDED, FAIL_ADD_POST, FETCH_POSTS} from '../actions/types';
+import {FETCH_POSTS, FETCH_POST} from '../actions/types';
 
-export default function(state = {all: [] }, action) {
+export default function(state = {all: [], post: null }, action) {
   switch(action.type) {
     case FETCH_POSTS:
-      console.log('Posts reducer fetch posts');
       let newState = [];
       for( let i in action.payload ) {
         if (action.payload.hasOwnProperty(i)){
           newState.push(action.payload[i]);
         }
       }
-      console.log("payload to array");
-      console.log(newState);
       return {
         ...state,
         all: newState
       };
 
+    case FETCH_POST:
+      return {
+        ...state,
+        post: action.payload
+      };
 
     default:
       return state;
