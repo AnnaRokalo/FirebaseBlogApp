@@ -155,3 +155,26 @@ export function deletePost(id) {
       });
   }
 }
+
+export function updatePost(data) {
+  return dispatch => {
+    const postId = data.postId;
+    const postUpdateRef = firebase.database().ref('posts/' + postId);
+    //const userUid = firebase.auth().currentUser.uid;
+    postsRef.set({
+      postId,
+      title: props.title,
+      data: props.post,
+      author: userUid
+    }).then(() => {
+      dispatch({
+        type: POST_ADDED
+      });
+    }).catch((error) => {
+      dispatch({
+        type: FAIL_ADD_POST,
+        payload: error.message
+      });
+    });
+  }
+}

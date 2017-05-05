@@ -39,6 +39,7 @@ class PostDetail extends Component {
             <Link to="/" className="">Back to Posts</Link>
           </div>
           <div className="col-xs-1 col-xs-offset-8">
+            <Link className="nav-link" to="/post/edit-post">Edit</Link>
             <button onClick={this.onDeleteClick.bind(this)}
                     className="btn btn-danger pull-xs-right">
               Delete post

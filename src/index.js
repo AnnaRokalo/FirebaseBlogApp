@@ -11,6 +11,9 @@ import SignUp from './components/auth/signup';
 import AddPost from './components/addPost';
 import postList from './components/postList';
 import Post from './components/post';
+import EditPost from './components/updatePost';
+
+
 import reducers from './reducers';
 import * as actions from './actions/index';
 
@@ -37,6 +40,7 @@ ReactDOM.render(
         <Route path="/signup" component={SignUp} />
         <Route path="/add-post" component={AddPost} />
         <Route path="posts/:id" component={Post} />
+        <Route path="/post/edit-post" component={EditPost} />
       </Route>
     </Router>
   </Provider>
