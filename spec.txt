@@ -1,0 +1,15 @@
+﻿Написать блог (например как medium.com).
+Тех. требования:
+	- По верстке использовать bootstrap или material.
+	- По архитектуре ту, которую я тебе кидал статью с operations и все дела (https://medium.freecodecamp.com/scaling-your-redux-app-with-ducks-6115955638be)
+	- По остальному react+redux.
+	- По формам react-redux-form.
+	- Для базы - firebase.
+
+Функционал:
+	1. CRUD операции со статьей: create, read, update, delete.
+	2. Like статьи.
+	3. Количество просмотров.
+	4. Авторизация пользователя.
+
+
