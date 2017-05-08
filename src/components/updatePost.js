@@ -13,6 +13,17 @@ class editPost extends Component {
     browserHistory.push('/');
   }
 
+  getOldTitle() {
+    console.log(this.props);
+    return this.props.postTitle;
+  }
+
+  getOldPost() {
+    console.log(this.props);
+    return this.props.post;
+  }
+
+
   render() {
     return (
       <Form model="forms.addPost"
@@ -23,6 +34,7 @@ class editPost extends Component {
           <Control.text
             model=".title"
             className="form-control"
+            value={this.getOldTitle()}
             validators={{
               required
             }}/>
@@ -40,6 +52,7 @@ class editPost extends Component {
           <Control.textarea
             model=".post"
             className="form-control"
+            value={this.getOldPost()}
             validators={{
               required
             }}/>
@@ -60,5 +73,11 @@ class editPost extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    postTitle: state.posts.post.title,
+    post: state.posts.post.data
+  }
+}
 
-export default connect(null, {createPost})(editPost);
+export default connect(mapStateToProps, {createPost})(editPost);
