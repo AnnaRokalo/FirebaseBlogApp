@@ -1,21 +1,19 @@
 import React, {Component} from 'react';
-import { Field, reduxForm } from 'redux-form';
-import * as actions from '../../actions';
+import { Control, Form, Errors, actions } from 'react-redux-form';
+import {signUpUser} from '../../actions';
 import {connect} from 'react-redux';
+
+
+const required = (val) => val && val.length;
+
+const passwordsMatch = ({ password, confirmPassword }) => {
+  return password === confirmPassword;
+};
 
 class SignUp extends Component {
   handleFormSubmit(formProps) {
+    console.log("signUp");
     this.props.signUpUser(formProps);
-  }
-
-  renderField({ input, label, type, meta: { touched, error } }) {
-    return (
-      <fieldset className="form-group">
-        <label>{label}</label>
-        <input  {...input} className="form-control" placeholder={label} type={type}/>
-        {touched && error && <div className="error">{error}</div> }
-      </fieldset>
-    );
   }
 
   renderAlert() {
@@ -29,41 +27,84 @@ class SignUp extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <Field name="email" label="email" component={this.renderField} type="email"/>
-        <Field name="password" label="password" component={this.renderField}  type="password"/>
-        <Field name="confirmPassword" label="confirmPassword" component={this.renderField} type="password"/>
+      <Form model="forms.userSignUp"
+            onSubmit={(user) => this.handleFormSubmit(user)}
+            form="signUpForm"
+            validators={{
+              '': { passwordsMatch }
+            }}
+      >
+        <div className="form-group">
+          <label>Email:</label>
+          <Control.text type="email"
+                        model=".email"
+                        className="form-control"
+                        validators={{
+                          required,
+                          validEmail: (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)}} />
+          <Errors
+            className="text-danger"
+            model=".email"
+            show="touched"
+            messages={{
+              required: 'Please, enter the email.',
+              validEmail: 'Invalid email address',
+            }}
+          />
+        </div>
+        <div className="form-group">
+          <label>Password:</label>
+          <Control type="password"
+                   model=".password"
+                   className="form-control"
+                   validators={{
+                     required}} />
+          <Errors
+            className="text-danger"
+            model=".password"
+            show="touched"
+            messages={{
+              required: 'Please, enter the password.'
+            }}
+          />
+        </div>
+        <div className="form-group">
+          <label>Confirm Password:</label>
+          <Control type="password"
+                   model=".confirmPassword"
+                   className="form-control"
+                   validators={{
+                     required
+                   }} />
+          <Errors
+            className="text-danger"
+            model=".confirmPassword"
+            show="touched"
+            messages={{
+              required: 'Please, enter the password.'
+            }}
+          />
+        </div>
         {this.renderAlert()}
+        <Errors
+          className="alert alert-danger"
+          model="forms.userSignUp"
+          show="touched"
+          messages={{
+            passwordsMatch: "Passwords doesn't match."
+          }}
+        />
         <button action="submit" className="btn btn-primary">Sign Up</button>
-      </form>
+      </Form>
     );
   }
 }
 
-function validate(formProps) {
-  const errors = {};
-
-  if(!formProps.email)
-    errors.email = 'Please enter an email';
-  if(!formProps.password)
-    errors.password = 'Please enter a password';
-  if(!formProps.confirmPassword)
-    errors.confirmPassword = 'Please enter a password confirmation';
-  if(formProps.password !== formProps.confirmPassword)
-    errors.password = 'Passwords must match';
-
-  return errors;
-}
-
-SignUp = reduxForm({
-  form: 'SignUpForm',
-  validate
-})(SignUp);
-
 function mapStateToProps(state) {
-  return {errorMessage: state.auth.error};
+  return {
+    errorMessage: state.auth.error
+  };
 }
 
-export default connect(mapStateToProps, actions)(SignUp);
+export default connect(mapStateToProps, {signUpUser})(SignUp);

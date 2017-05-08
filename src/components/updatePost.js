@@ -1,41 +1,64 @@
 import React, {Component} from 'react';
-import { Field, reduxForm } from 'redux-form';
-import {updatePost} from '../actions/index';
+import { Control, Form, Errors } from 'react-redux-form';
+import {createPost} from '../actions/index';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
+const required = (val) => val && val.length;
 
-class EditPost extends Component {
-  handleFormSubmit({title, post}) {
-    this.props.updatePost({title, post, postId: this.props.post.postId});
+
+class editPost extends Component {
+  handleFormSubmit({id, title, post}) {
+    this.props.editPost({id, title, post});
     browserHistory.push('/');
   }
 
   render() {
-    const { handleSubmit } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <fieldset className="form-group">
+      <Form model="forms.addPost"
+            onSubmit={(formProps) => this.handleFormSubmit(formProps)}
+            form="addPostForm">
+        <div className="form-group">
           <label>Title</label>
-          <Field className="form-control" name="title" component="input" type="text" value="My title" />
-        </fieldset>
-        <fieldset className="form-group">
+          <Control.text
+            model=".title"
+            className="form-control"
+            validators={{
+              required
+            }}/>
+          <Errors
+            className="text-danger"
+            model=".title"
+            show="touched"
+            messages={{
+              required: 'Please, enter the title.'
+            }}
+          />
+        </div>
+        <div className="form-group">
           <label>Story</label>
-          <Field className="form-control" name="post" component="textarea" />
-        </fieldset>
-        <button action="submit" className="btn btn-primary">Add</button>
-      </form>
+          <Control.textarea
+            model=".post"
+            className="form-control"
+            validators={{
+              required
+            }}/>
+          <Errors
+            className="text-danger"
+            model=".post"
+            show="touched"
+            messages={{
+              required: 'Please, enter the password.'
+            }}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Add
+        </button>
+      </Form>
     );
   }
 }
 
-EditPost = reduxForm({
-  form: 'AddPostForm'
-})(EditPost);
 
-function mapStateToProps(state) {
-  return { post: state.posts.post };
-}
-
-
-export default connect(mapStateToProps, {updatePost})(EditPost);
+export default connect(null, {createPost})(editPost);

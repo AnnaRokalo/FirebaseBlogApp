@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 import {createPost} from '../actions/index';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+
+const required = (val) => val && val.length;
 
 
 class AddPost extends Component {
@@ -11,27 +13,54 @@ class AddPost extends Component {
     browserHistory.push('/');
   }
 
+
+
   render() {
-    const { handleSubmit } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <fieldset className="form-group">
+      <Form model="forms.addPost"
+            onSubmit={(formProps) => this.handleFormSubmit(formProps)}
+            form="addPostForm">
+        <div className="form-group">
           <label>Title</label>
-          <Field className="form-control" name="title" component="input" type="text"/>
-        </fieldset>
-        <fieldset className="form-group">
+          <Control.text
+            model=".title"
+            className="form-control"
+            validators={{
+              required
+            }}/>
+          <Errors
+            className="text-danger"
+            model=".title"
+            show="touched"
+            messages={{
+              required: 'Please, enter the title.'
+            }}
+          />
+        </div>
+        <div className="form-group">
           <label>Story</label>
-          <Field className="form-control" name="post" component="textarea" />
-        </fieldset>
-        <button action="submit" className="btn btn-primary">Add</button>
-      </form>
+          <Control.textarea
+            model=".post"
+            className="form-control"
+            validators={{
+              required
+            }}/>
+          <Errors
+            className="text-danger"
+            model=".post"
+            show="touched"
+            messages={{
+              required: 'Please, enter the password.'
+            }}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Add
+        </button>
+      </Form>
     );
   }
 }
-
-AddPost = reduxForm({
-  form: 'AddPostForm'
-})(AddPost);
 
 
 export default connect(null, {createPost})(AddPost);
